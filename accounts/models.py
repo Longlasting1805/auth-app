@@ -50,6 +50,10 @@ class UserManager(BaseUserManager):
 
 class UserData(AbstractUser):
     username = None
+    firstname = models.CharField(max_length=100)
+    lastname = models.CharField(max_length=100)
+    date_of_birth = models.DateTimeField(null=True, blank=True)
+    phone_number = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=100, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)

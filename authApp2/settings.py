@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'accounts',
     'coursemanagement',
     'django_email_verification',
-    'django_rest_passwordreset'
+    'django_rest_passwordreset',
+    
 
 ]
 
@@ -53,6 +54,7 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
