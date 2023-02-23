@@ -16,11 +16,32 @@ class Course(models.Model):
     
 
 class Collection(models.Model):
-    collection_name = models.CharField(max_length=200, null=True )
     author = models.ForeignKey(UserData, on_delete=models.SET_NULL, null=True)
+    collection_name = models.CharField(max_length=200, null=True )
     courses = models.ManyToManyField(Course, help_text='select a course for this collection')    
 
     def __str__(self):
         return self.collection_name
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+           Collection.objects.filter(pk=self.courses).update(courses_count=F('courses_count')+1)
+        super().save(*args, **kwargs)    
+
+    # def init(self, courses):
+    #     self.courses = courses
+
+# class Quiz(models.Model):
+#     question = models.CharField(max_length=200)
+#     op1 = models.CharField(max_length=200,null=True)
+#     op2 = models.CharField(max_length=200,null=True)
+#     op3 = models.CharField(max_length=200,null=True)
+#     op4 = models.CharField(max_length=200,null=True)
+#     answer = models.CharField(max_lenght=200 , null=True)
+    
+#     def __str__(self):
+#         return self.question
+
+
 
         
