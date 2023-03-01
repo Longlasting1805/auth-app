@@ -5,7 +5,7 @@ from accounts.models import *
 
 class Course(models.Model):
     title = models.CharField(max_length=200)
-    description = models.CharField(max_length=200)
+    description = models.CharField(max_length=200, null=True)
     author = models.ForeignKey(UserData, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     updated_at = models.DateField(auto_now=True, null=True, blank=True)
@@ -23,25 +23,41 @@ class Collection(models.Model):
     def __str__(self):
         return self.collection_name
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-           Collection.objects.filter(pk=self.courses).update(courses_count=F('courses_count')+1)
-        super().save(*args, **kwargs)    
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #        Collection.objects.filter(pk=self.courses).update(courses_count=F('courses_count')+1)
+    #     super().save(*args, **kwargs)    
 
-    # def init(self, courses):
-    #     self.courses = courses
-
-# class Quiz(models.Model):
-#     question = models.CharField(max_length=200)
-#     op1 = models.CharField(max_length=200,null=True)
-#     op2 = models.CharField(max_length=200,null=True)
-#     op3 = models.CharField(max_length=200,null=True)
-#     op4 = models.CharField(max_length=200,null=True)
-#     answer = models.CharField(max_lenght=200 , null=True)
     
-#     def __str__(self):
-#         return self.question
 
+class Quiz(models.Model):
+    title = models.CharField(max_length=200, null=True)
+    description = models.TextField()
+    courses = models.ForeignKey(Course, on_delete=models.CASCADE,  null=True)
+    time_limit = models.PositiveIntegerField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+       
+    def __str__(self):
+        return self.title
 
+QUESTION_TYPE = (
+    ('single', 'single'),
+    ('multiple', 'multiple'),
+)        
 
-        
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question_text = models.CharField(max_length=200)
+    question_type = models.CharField(max_length=200, choices=QUESTION_TYPE, default='single')
+
+    def __str__(self):
+        return self.question_text
+
+class QuizTaker(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, null=True)
+    student = models.ForeignKey(UserData, on_delete=models.CASCADE, null=True)
+    score = models.FloatField()
+    completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.quiz

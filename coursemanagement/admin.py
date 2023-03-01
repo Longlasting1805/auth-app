@@ -1,5 +1,5 @@
 from django.contrib import admin
-from coursemanagement.models import Course, Collection
+from coursemanagement.models import Course, Collection, Quiz, Question, QuizTaker
 
 # Register your models here.
 class CourseAdmin(admin.ModelAdmin):
@@ -7,5 +7,7 @@ class CourseAdmin(admin.ModelAdmin):
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Collection)
-# admin.site.register(Quiz)
+admin.site.register(Quiz)
+admin.site.register(Question)
+admin.site.register(QuizTaker)
 
