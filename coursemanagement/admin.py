@@ -9,5 +9,9 @@ admin.site.register(Course, CourseAdmin)
 admin.site.register(Collection)
 admin.site.register(Quiz)
 admin.site.register(Question)
+
+class QuizTakerAdmin(admin.ModelAdmin):
+    list_display = ('quiz', 'student', 'score', 'completed')
+
 admin.site.register(QuizTaker)
 
