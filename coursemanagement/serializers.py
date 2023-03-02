@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from coursemanagement.models import Course, Collection, Quiz, Question, QuizTaker
+from coursemanagement.models import Course, Collection, Quiz, Question, QuizTaker, Answer
 
 
 
@@ -16,7 +16,7 @@ class CollectionSerializer(serializers.ModelSerializer):
 class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        fields = ('id', 'title', 'description', 'courses', 'time_limit')  
+        fields = ('id', 'name', 'topic', 'number_of_questions','courses', 'required_score_to_pass', 'time_limit')  
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,6 +26,12 @@ class QuestionSerializer(serializers.ModelSerializer):
 class QuizTakerSerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizTaker
-        fields = ('id','quiz', 'student', 'score', 'completed')      
+        fields = ('id', 'quiz', 'student', 'score', 'completed') 
+
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ('id', 'text', 'correct', 'question')         
+             
         
              

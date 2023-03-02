@@ -31,14 +31,19 @@ class Collection(models.Model):
     
 
 class Quiz(models.Model):
-    title = models.CharField(max_length=200, null=True)
-    description = models.TextField()
+    name = models.CharField(max_length=200, null=True)
+    topic = models.CharField(max_length=200, null=True)
+    number_of_questions = models.IntegerField(null=True)
+    required_score_to_pass = models.IntegerField(help_text='required scores to pass', default=1)
     courses = models.ForeignKey(Course, on_delete=models.CASCADE,  null=True)
-    time_limit = models.PositiveIntegerField(null=True, blank=True)
+    time_limit = models.PositiveIntegerField(null=True, blank=True, help_text='duration of the quiz in minute')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
        
     def __str__(self):
-        return self.title
+        return self.name
+
+    def get_questions(self):
+        return self.questions_set.all()    
 
 QUESTION_TYPE = (
     ('single', 'single'),
@@ -53,6 +58,9 @@ class Question(models.Model):
     def __str__(self):
         return self.question_text
 
+    def get_answers(self):
+        return self.answer_set.all()   
+
 class QuizTaker(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, null=True)
     student = models.ForeignKey(UserData, on_delete=models.CASCADE, null=True)
@@ -60,4 +68,14 @@ class QuizTaker(models.Model):
     completed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.quiz
+        return str(self.quiz)
+
+class Answer(models.Model):
+    text = models.CharField(max_length=200)
+    correct = models.BooleanField(default=False)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)   
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'question: {self.question.question_text}, answer: {self.text}, correct: {self.correct}'     
+
