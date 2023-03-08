@@ -77,5 +77,17 @@ class Answer(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'question: {self.question.question_text}, answer: {self.text}, correct: {self.correct}'     
+        return f'question: {self.question.question_text}, answer: {self.text}, correct: {self.correct}' 
+
+class EssayAssignment(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    student = models.ForeignKey(UserData, on_delete=models.CASCADE, null=True)
+    due_date = models.DateTimeField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    word_count = models.PositiveIntegerField()
+    is_graded = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
 
