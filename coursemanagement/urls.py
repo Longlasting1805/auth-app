@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListCourseView, DetailCourseView, ListCollectionView, DetailCollectionView, ListQuizView, DetailQuizView, ListQuestionView, DetailQuestionView, ListQuizTakerView, DetailQuizTakerView, ListAnswerView, DetailAnswerView
+from .views import ListCourseView, DetailCourseView, ListCollectionView, DetailCollectionView, ListQuizView, DetailQuizView, ListQuestionView, DetailQuestionView, ListQuizTakerView, DetailQuizTakerView, ListAnswerView, DetailAnswerView, ListAssignmentView, DetailAssignmentView, ListSubmissionView, DetailSubmissionView
 
 urlpatterns = [
      path('courses/', ListCourseView.as_view(), name="course-list"),  
@@ -12,6 +12,10 @@ urlpatterns = [
      path('questions/<int:pk>', DetailQuestionView.as_view(), name="question-detail"),
      path('quiztakers/', ListQuizTakerView.as_view(), name="quiztaker-list"),
      path('quiztakers/<int:pk>', DetailQuizTakerView.as_view(), name="quiztaker-detail"),
-       path('answers/', ListAnswerView.as_view(), name="answer-list"),
+     path('answers/', ListAnswerView.as_view(), name="answer-list"),
      path('answers/<int:pk>', DetailAnswerView.as_view(), name="answer-detail"),
+     path('assignments/', ListAssignmentView.as_view(), name="assignment-list"),
+     path('assignments/<int:pk>', DetailAssignmentView.as_view(), name="assignment-detail"),
+     path('submissions/', ListSubmissionView.as_view(), name="submission-list"),
+     path('submissions/<int:pk>', DetailSubmissionView.as_view(), name="submission-detail"),
 ]

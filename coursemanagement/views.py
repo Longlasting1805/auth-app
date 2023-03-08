@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Course, Collection, Quiz, Question, QuizTaker, Answer
-from .serializers import CourseSerializer, CollectionSerializer, QuizSerializer, QuestionSerializer, QuizTakerSerializer, AnswerSerializer
+from .models import Course, Collection, Quiz, Question, QuizTaker, Answer, Assignment, Submission
+from .serializers import CourseSerializer, CollectionSerializer, QuizSerializer, QuestionSerializer, QuizTakerSerializer, AnswerSerializer, AssignmentSerializer, SubmissionSerializer
 from rest_framework import generics
 from django.db.models import F 
 # from rest_framework.response import Response
@@ -55,7 +55,23 @@ class ListAnswerView(generics.ListAPIView):
 
 class DetailAnswerView(generics.UpdateAPIView):
         queryset = Answer.objects.all()
-        serializer_class = AnswerSerializer                           
+        serializer_class = AnswerSerializer  
+
+class ListAssignmentView(generics.ListAPIView):
+        queryset = Assignment.objects.all()
+        serializer_class = AssignmentSerializer
+
+class DetailAssignmentView(generics.UpdateAPIView):
+        queryset = Assignment.objects.all()
+        serializer_class = AssignmentSerializer 
+
+class ListSubmissionView(generics.ListAPIView):
+        queryset = Submission.objects.all()
+        serializer_class = SubmissionSerializer
+
+class DetailSubmissionView(generics.UpdateAPIView):
+        queryset = Submission.objects.all()
+        serializer_class = SubmissionSerializer                                          
 
 
 
