@@ -1,5 +1,5 @@
 from django.contrib import admin
-from coursemanagement.models import Course, Collection, Quiz, Question, QuizTaker, Answer
+from coursemanagement.models import Course, Collection, Quiz, Question, QuizTaker, Answer, EssayAssignment
 
 # Register your models here.
 class CourseAdmin(admin.ModelAdmin):
@@ -9,6 +9,7 @@ admin.site.register(Course, CourseAdmin)
 admin.site.register(Collection)
 admin.site.register(Quiz)
 admin.site.register(Answer)
+admin.site.register(EssayAssignment)
 
 class AnswerInline(admin.TabularInline):
     model = Answer
