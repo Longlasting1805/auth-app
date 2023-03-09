@@ -1,0 +1,9 @@
+asgiref==3.6.0
+backports.zoneinfo;python_version<"3.9"
+Django==4.0.8
+sqlparse==0.4.3
+psycopg2-binary==2.9.3
+djangorestframework
+djangorestframework-simplejwt
+django-email-verification
+django-rest-passwordreset

@@ -5,6 +5,7 @@ from accounts.models import *
 
 class Course(models.Model):
     title = models.CharField(max_length=200)
+
     description = models.CharField(max_length=200, 
                                   null=True)
     author = models.ForeignKey(UserData, 
@@ -23,11 +24,13 @@ class Course(models.Model):
     
 
 class Collection(models.Model):
-    author = models.ForeignKey(UserData, on_delete=models.SET_NULL, 
+    author = models.ForeignKey(UserData, 
+                               on_delete=models.SET_NULL, 
                                null=True)
     collection_name = models.CharField(max_length=200, 
                                        null=True )
-    courses = models.ManyToManyField(Course, help_text='select a course for this collection')    
+    courses = models.ManyToManyField(Course, 
+                                    help_text='select a course for this collection')    
 
     def __str__(self):
         return self.collection_name
@@ -129,4 +132,4 @@ class Submission(models.Model):
     date = models.DateTimeField()
 
     def __str__(self):
-        return f'assignment: {self.assignment.grade}' 
+        return f'Student Grade: {self.assignment.grade}' 

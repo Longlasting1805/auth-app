@@ -12,6 +12,10 @@ admin.site.register(Answer)
 admin.site.register(Assignment)
 admin.site.register(Submission)
 
+class SubmissionAdmin(admin.ModelAdmin):
+    list_display = ('assignment', 'student', 'comment', 'date')
+
+
 class AnswerInline(admin.TabularInline):
     model = Answer
 
