@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$v+&%v=m!^jqv^3$55oxe=7$6ut1+kc8ki&qwe81!&w#%&&@cb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -41,12 +41,19 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'accounts',
+    'rest_registration',
     'coursemanagement',
     'django_email_verification',
     'django_rest_passwordreset',
     
 
 ]
+
+REST_REGISTRATION = {
+    'REGISTER_VERIFICATION_ENABLED': False,
+    'RESET_PASSWORD_VERIFICATION_ENABLED': False,
+    'REGISTER_EMAIL_VERIFICATION_ENABLED': False,
+}
 
 AUTH_USER_MODEL = 'accounts.UserData'
 
