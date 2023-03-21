@@ -78,8 +78,8 @@ class UserData(AbstractUser):
     def __str__(self):
         return self.name    
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.role = self.base_role
-            return super().save(*args, **kwargs)       
+    # def save(self, *args, **kwargs):
+    #     if not self.pk:
+    #         self.users = self.base_role
+    #         return super().save(*args, **kwargs)       
     

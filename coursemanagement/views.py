@@ -11,6 +11,7 @@ from django.db.models import F
 class ListCourseView(generics.ListAPIView):
         queryset = Course.objects.all()
         serializer_class = CourseSerializer
+        
 
 class DetailCourseView(generics.RetrieveAPIView):
     queryset =Course.objects.all()
