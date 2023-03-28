@@ -50,14 +50,14 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class UserData(AbstractUser):
-    USER_TYPE = (
-        ('ADMIN', 'admin'),
-        ('STUDENT', 'student'),
-    )
+    # USER_TYPE = (
+    #     ('ADMIN', 'admin'),
+    #     ('STUDENT', 'student'),
+    # )
        
 
     username = None
-    user = models.CharField(max_length=50, choices=USER_TYPE, default='admin')
+    # user = models.CharField(max_length=50, choices=USER_TYPE, default='admin')
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     date_of_birth = models.DateTimeField(null=True, blank=True)
@@ -66,9 +66,9 @@ class UserData(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False) 
+    is_student = models.BooleanField(default=True)
+    # is_staff = models.BooleanField(default=False)
+    # is_superuser = models.BooleanField(default=False) 
 
     objects = UserManager()
 
@@ -76,10 +76,16 @@ class UserData(AbstractUser):
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
-        return self.name    
+        return self.name  
 
     # def save(self, *args, **kwargs):
     #     if not self.pk:
     #         self.users = self.base_role
     #         return super().save(*args, **kwargs)       
-    
+
+class Admin(models.Model):
+    user = models.OneToOneField(UserData, on_delete=models.CASCADE,primary_key=True)
+
+class Student(models.Model):
+    user = models.OneToOneField(UserData, on_delete=models.CASCADE,primary_key=True)    
+        

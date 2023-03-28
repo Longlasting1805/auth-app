@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/change-password/', ChangPasswordView.as_view(), name='change-password'),
     path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
     path('api/v1/', include(api_urlpatterns)),
+    path()
     # path('email/', include(email_urls)),
     path('send_email/', sendEmail),
     # path('email/<str:token>/', confirm),
