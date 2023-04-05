@@ -20,19 +20,6 @@ class RegisterView(APIView):
         serializer.save()
         return Response(serializer.data)
 
-class AdminView(APIView):
-    def get(self, request):
-        admins = Admin.objects.all()
-        serializer = AdminSerializer(admins, many=True)
-        return Response(serializer.data)
-
-
-
-class StudentView(APIView):
-
-
-
-
 
 class ChangPasswordView(generics.UpdateAPIView):
     serializer_class = ChangePasswordSerializer

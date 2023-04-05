@@ -2,8 +2,12 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.dispatch import receiver
 from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
+from rest_framework.authtoken.models import Token
+from django.conf import settings
 
 # Create your models here.
 
@@ -50,49 +54,51 @@ class UserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class UserData(AbstractUser):
-    # USER_TYPE = (
-    #     ('ADMIN', 'admin'),
-    #     ('STUDENT', 'student'),
-    # )
+    USER_TYPE = (
+        ('ADMIN', 'admin'),
+        ('STUDENT', 'student'),
+    )
        
 
     username = None
-    # user = models.CharField(max_length=50, choices=USER_TYPE, default='admin')
-    firstname = models.CharField(max_length=100)
-    lastname = models.CharField(max_length=100)
+    user_type = models.CharField(max_length=50, choices=USER_TYPE, default='admin')
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
     date_of_birth = models.DateTimeField(null=True, blank=True)
     phone_number = models.IntegerField(blank=True, null=True)
-    name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-    is_admin = models.BooleanField(default=False)
-    is_student = models.BooleanField(default=True)
-    # is_staff = models.BooleanField(default=False)
-    # is_superuser = models.BooleanField(default=False) 
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False) 
 
     objects = UserManager()
-
+ 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
     def __str__(self):
-        return self.name  
+        return self.first_name  
 
     # def save(self, *args, **kwargs):
     #     if not self.pk:
     #         self.users = self.base_role
-    #         return super().save(*args, **kwargs)       
+    #         return super().save(*args, **kwargs) 
 
-class Admin(models.Model):
-    user = models.OneToOneField(UserData, on_delete=models.CASCADE,primary_key=True)
-    admin_name = models.CharField(max_length=100, null=True)
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)          
 
-    def __str__(self):
-       return str(self.user)
+# class Admin(models.Model):
+#     user = models.OneToOneField(UserData, on_delete=models.CASCADE,primary_key=True)
+#     admin_name = models.CharField(max_length=100, null=True)
 
-class Student(models.Model):
-    user = models.OneToOneField(UserData, on_delete=models.CASCADE,primary_key=True)  
-    student_name = models.CharField(max_length=100,null=True)  
+#     def __str__(self):
+#        return str(self.user)
+
+# class Student(models.Model):
+#     user = models.OneToOneField(UserData, on_delete=models.CASCADE,primary_key=True)  
+#     student_name = models.CharField(max_length=100,null=True)  
 
     def __str__(self):
        return str(self.user)

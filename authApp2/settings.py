@@ -45,9 +45,18 @@ INSTALLED_APPS = [
     'coursemanagement',
     'django_email_verification',
     'django_rest_passwordreset',
+    'rest_framework.authtoken',
     
 
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+ACCOUNT_UNIQUE_EMAIL = True
 
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': False,
