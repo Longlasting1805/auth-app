@@ -6,13 +6,13 @@ from coursemanagement.models import Course, Collection, Quiz, Question, QuizTake
 class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
-        fields = ('id', 
+        fields = ['id', 
                 'title', 
                 'author', 
                 'description', 
                 'created_at', 
-                'updated_at')
-
+                'updated_at'
+]
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
