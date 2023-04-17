@@ -1,15 +1,25 @@
-from django.shortcuts import render
-from .models import Course, Collection, Quiz, Question, QuizTaker, Answer, Assignment, Submission
-from .serializers import CourseSerializer, CollectionSerializer, QuizSerializer, QuestionSerializer, QuizTakerSerializer, AnswerSerializer, AssignmentSerializer, SubmissionSerializer
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from .models import Course, Collection
+from .serializers import CourseSerializer, CollectionSerializer
 from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from django.db.models import F 
 from rest_framework.response import Response
 from rest_framework import permissions
+from accounts.models import UserData
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
 
-class CourseView(APIView):
+class CourseViewSet(ModelViewSet):
+      queryset = Course.objects.all()
+      serializer_class = CourseSerializer
+    #   permission_classes = [permissions.IsAdminUser]
+
       def get_permissions(self):
           if self.request.method == ['POST', 'PUT', 'DELETE']:
              return [permissions.IsAdminUser,]
@@ -48,22 +58,56 @@ class CourseView(APIView):
           return Response(status=204)
 
 
-class CollectionView(APIView):
-      permission_classes = [permissions.AllowAny]
-     
-      def post(self, request):
-          collection = Collection.objects.get_or_create(user=request.user)
-          course = Course.objects.get(pk=request.data['course_id'])
-          collection.courses.add(course)  
-          serializer = CollectionSerializer(collection)
-          return Response(serializer.data, status=201)
+class CollectionViewset(ModelViewSet):
+    serializer_class = CollectionSerializer
+    queryset = Collection.objects.all()
+    permission_classes = [permissions.AllowAny]
+
+    @login_required
+    def add_course(request, course_id):
+        course = get_object_or_404(Course, pk=course_id)
+        Collection.objects.get_or_create(user=request.user, course=course)
+        return HttpResponseRedirect(reverse('my_collection'))
+
+    @login_required
+    def remove_course(request, course_id):
+        collection = get_object_or_404(Collection, user=request.user, course_id=course_id)
+        collection.delete()
+        return HttpResponseRedirect(reverse('my_collection'))
+
+    # def create(self, request, *args, **kwargs):
+    #     print(request.data)
+    #     email = request.user.email
+    #     if not UserData.objects.filter(email= email).exists:
+    #             return Response({'detail': "User does not exist"})
+    #     serializer = CollectionSerializer(request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save
+    #     return Response(serializer.data, status=201)
+        # collection = Collection.objects.get_or_create(**request.data, user=email)
+        # course = Course.objects.get(pk=request.data['course_id'])
+        # collection.courses.add(course)  
+        # serializer = CollectionSerializer(collection)
+        # return Response(serializer.data, status=201)
+        
+    #   def post(self, request):
+    #       print(request.data)
+    #       email = request.user
+    #       print(email)
+    #       if not UserData.objects.filter(email= email).exists:
+    #           return Response({'detail': "User does not exist"})
+    #       collection = Collection.objects.get_or_create(**request.data, user=email)
+    #       course = Course.objects.get(pk=request.data['course_id'])
+    #       collection.courses.add(course)  
+    #       serializer = CollectionSerializer(collection)
+    #       return Response(serializer.data, status=201)
       
-      def delete(self, request):
-          collection = Collection.objects.get_or_create(user=request.user)
-          course = Course.objects.get(pk=request.data['course_id'])
-          collection.courses.delete(course) 
-          serializer = CollectionSerializer(collection) 
-          return Response(serializer.data, status=204)
+    # def delete(self, request):
+    #     collection = Collection.objects.get_or_create(user=request.user)
+    #     course = Course.objects.get(pk=request.data['course_id'])
+    #     collection.courses.delete(course) 
+    #     serializer = CollectionSerializer(collection) 
+    #     return Response(serializer.data, status=204)
           
  
 

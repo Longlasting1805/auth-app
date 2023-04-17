@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from coursemanagement.models import Course, Collection, Quiz, Question, QuizTaker, Answer, Assignment, Submission
-
+from coursemanagement.models import Course, Collection
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -8,7 +7,7 @@ class CourseSerializer(serializers.ModelSerializer):
         model = Course
         fields = ['id', 
                 'title', 
-                'author', 
+                'user', 
                 'description', 
                 'created_at', 
                 'updated_at'
@@ -16,65 +15,62 @@ class CourseSerializer(serializers.ModelSerializer):
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = ('id', 
-                'collection_name', 
-                'author', 
-                'courses')   
+        fields = ['user', 'collection_name', 'courses']
 
-class QuizSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Quiz
-        fields = ('id', 
-                'name', 
-                'topic', 
-                'number_of_questions',
-                'courses', 
-                'required_score_to_pass', 
-                'time_limit')  
+# class QuizSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Quiz
+#         fields = ('id', 
+#                 'name', 
+#                 'topic', 
+#                 'number_of_questions',
+#                 'courses', 
+#                 'required_score_to_pass', 
+#                 'time_limit')  
 
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = ('id', 
-                'quiz', 
-                'question_text', 
-                'question_type')  
+# class QuestionSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Question
+#         fields = ('id', 
+#                 'quiz', 
+#                 'question_text', 
+#                 'question_type')  
 
-class QuizTakerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = QuizTaker
-        fields = ('id', 
-                'quiz', 
-                'student', 
-                'score', 
-                'completed') 
+# class QuizTakerSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = QuizTaker
+#         fields = ('id', 
+#                 'quiz', 
+#                 'student', 
+#                 'score', 
+#                 'completed') 
 
-class AnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Answer
-        fields = ('id',
-                'text',
-                'correct',
-                'question') 
+# class AnswerSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Answer
+#         fields = ('id',
+#                 'text',
+#                 'correct',
+#                 'question') 
 
-class AssignmentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Assignment
-        fields = ('id', 
-                'essay', 
-                'description', 
-                'student', 
-                'schedule', 
-                'deadline', 
-                'grade')                
+# class AssignmentSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Assignment
+#         fields = ('id', 
+#                 'essay', 
+#                 'description', 
+#                 'student', 
+#                 'schedule', 
+#                 'deadline', 
+#                 'grade')                
              
-class SubmissionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Submission
-        fields = ('id',
-                'assignment',
-                'student',
-                'comment',
-                'date')           
+# class SubmissionSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Submission
+#         fields = ('id',
+#                 'assignment',
+#                 'student',
+#                 'comment',
+#                 'date')           
         
              

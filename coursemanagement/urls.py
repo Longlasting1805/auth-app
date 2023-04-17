@@ -1,10 +1,17 @@
-from django.urls import path
-from .views import CourseView, CollectionView
+from django.urls import path, include
+from .views import CourseViewSet, CollectionViewset
+from rest_framework import routers
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter(trailing_slash=False)
+app_router = routers.DefaultRouter()
+
+app_router.register('collections', CollectionViewset, "collection")
+app_router.register('courses', CourseViewSet, "course")
 
 urlpatterns = [
-     path('courses/', CourseView.as_view(), name="create-course"),  
-     path('collections/', CollectionView.as_view(), name="collection"),
+     # path('courses/', CourseView.as_view(), name="create-course"),  
+     path('', include(app_router.urls)),
      # path('quizs/', ListQuizView.as_view(), name="quiz-list"),
      # path('quizs/<int:pk>', DetailQuizView.as_view(), name="quiz-detail"),
      # path('questions/', ListQuestionView.as_view(), name="question-list"),
