@@ -25,7 +25,8 @@ class Course(models.Model):
 
 class Collection(models.Model):
     user = models.ForeignKey(UserData, 
-                              null=True, blank=True, 
+                              null=True, 
+                              blank=True, 
                               on_delete=models.SET_NULL)
     collection_name = models.CharField(max_length=200, 
                                        null=True )
