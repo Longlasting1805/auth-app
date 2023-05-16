@@ -33,18 +33,10 @@ class Collection(models.Model):
     courses = models.ForeignKey(Course,
                                 on_delete=models.SET_NULL, 
                                 null=True,
-                                help_text='select a course for this collection')
-    # user_id = models.CharField(max_length=200, null=True, blank=True)    
+                                help_text='select a course for this collection')    
 
     def __str__(self):
-        return self.collection_name
-
-    # def save(self, *args, **kwargs):
-    #     if not self.pk:
-    #        Collection.objects.filter(pk=self.courses).update(courses_count=F('courses_count')+1)
-    #     super().save(*args, **kwargs)    
-
-    
+        return self.collection_name 
 
 # class Quiz(models.Model):
 #     name = models.CharField(max_length=200, 
