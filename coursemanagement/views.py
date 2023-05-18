@@ -4,58 +4,77 @@ from django.urls import reverse
 from .models import Course, Collection
 from .serializers import CourseSerializer, CollectionSerializer
 from rest_framework.views import APIView
+from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from django.db.models import F 
 from rest_framework.response import Response
 from rest_framework import permissions
 from accounts.models import UserData
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets, permissions
+from rest_framework import status
 
 
 
 # Create your views here.
 
-class CourseViewSet(ModelViewSet):
-      queryset = Course.objects.all()
-      serializer_class = CourseSerializer
-    #   permission_classes = [permissions.IsAdminUser]
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+    permission_classes = (permissions.IsAdminUser,) 
 
-      def get_permissions(self):
-          if self.request.method == ['POST', 'PUT', 'DELETE']:
-             return [permissions.IsAdminUser,]
-          
-          elif self.request.method == 'GET':
-               return [permissions.AllowAny(),]  
-          else:
-              return []
-          
-      def post(self, request):
-        serializer = CourseSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        else:
-            return Response(serializer.errors, status=400)
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-      def get(self, request):
-          courses = Course.objects.all()
-          serializer = CourseSerializer(courses, many=True)
-          return Response(serializer.data)
-      
-      def put(self, request, pk):
-            course = Course.objects.get(pk=pk)
-            serializer = CourseSerializer(course, data=request.data)
-            if serializer.is_valid():
-               serializer.save()
-               return Response(serializer.data)
-            else:
-               return Response(serializer.errors, status=400)
-      
-      def delete(self, request, pk):
-          course = Course.objects.get(pk=pk)
-          course.delete()
-          return Response(status=204)
+    # def get_permissions(self):
+    #     if self.request.method == ['POST', 'PUT', 'DELETE']:
+    #         return [permissions.IsAdminUser,]
+        
+    #     elif self.request.method == 'GET':
+    #         return [permissions.AllowAny(),]  
+    #     else:
+    #         return []
+    
+    # @action(permission_classes=[permissions.IsAdminUser], detail=False, url_name='creates', url_path='creates', methods=['post'])
+    # def creates(self, request, *args, **kwargs):
+        # print(request.data.get('user'))
+
+        # if (request.data.get('user') == 2):
+
+        #     return Response('error')
+
+        # serializer = CourseSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data, status=201)
+        # else:
+        #     return Response(serializer.errors, status=400)
+
+    # def create(self, request, *args, **kwargs):
+    #     return super().create(request, *args, **kwargs)
+
+    # def get(self, request):
+    #     courses = Course.objects.all()
+    #     serializer = CourseSerializer(courses, many=True)
+    #     return Response(serializer.data)
+    
+    # def put(self, request, pk):
+    #     course = Course.objects.get(pk=pk)
+    #     serializer = CourseSerializer(course, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     else:
+    #         return Response(serializer.errors, status=400)
+    
+    # def delete(self, request, pk):
+    #     course = Course.objects.get(pk=pk)
+    #     course.delete()
+    #     return Response(status=204)
 
 
 class CollectionViewset(ModelViewSet):
