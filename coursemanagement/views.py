@@ -179,10 +179,3 @@ class CollectionViewset(ModelViewSet):
 #         queryset = Submission.objects.all()
 #         serializer_class = SubmissionSerializer                                          
 
-
-
-
-
-       
-        
-    
