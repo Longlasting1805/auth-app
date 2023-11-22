@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from django.db.models import F 
 from rest_framework.response import Response
 from rest_framework import permissions
@@ -22,13 +23,15 @@ from rest_framework import status
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    permission_classes = (permissions.IsAdminUser,) 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAdminUser, permissions.IsAuthenticated) 
 
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    def post(self, request, *args, **kwargs):
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if not request.user.is_staff:
+            return Response({'error': 'Only admin users can create courses.'}, status=status.HTTP_403_FORBIDDEN)
+
+        return super().create(request, *args, **kwargs)
 
     # def get_permissions(self):
     #     if self.request.method == ['POST', 'PUT', 'DELETE']:
