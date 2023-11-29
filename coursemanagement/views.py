@@ -23,8 +23,8 @@ from rest_framework import status
 class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    authentication_classes = [TokenAuthentication]
-    permission_classes = (permissions.IsAdminUser, permissions.IsAuthenticated) 
+    # authentication_classes = [TokenAuthentication]
+    permission_classes = (permissions.IsAdminUser,) 
 
     def post(self, request, *args, **kwargs):
 
